@@ -235,6 +235,7 @@ static void main_loop()
   ![image](https://user-images.githubusercontent.com/67876027/157838278-6e76cff6-b52f-4bd0-84bf-b0ec322c6dd3.png)
   
 <h3>Mini Functions ..</h3>
+
 ```c#
 public void error_screen(string error){ ..}
 public void refresh(){ ..}
