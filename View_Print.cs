@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -19,12 +19,19 @@ namespace test
         public int Select_list_options   
         {
             get { return select_list_options; }   
-            set { select_list_options = value; }  
+            set { select_list_options = value; 
+                select_options =select_list_options ;
+                refresh();
+            }  
         }
         public int Select_list_options_row   
         {
             get { return select_list_options_row; }   
-            set { select_list_options_row = value; }  
+            set { 
+                select_list_options_row = value;
+                column_options =select_list_options_row ;
+                refresh();
+                 }  
         }
 
 
@@ -56,6 +63,8 @@ namespace test
             Console.Clear();
             get_windowSize();
             all_options = 0;
+            select_list_options = select_options;
+            select_list_options_row = column_options;
 
         }
 
@@ -112,7 +121,7 @@ namespace test
         }
 
         //add bar line
-        public void bar_line(int width, int HEIGHTight, int margin_left, int margin_top, object color_bg, string titel, object color_text,bool visable)
+        public void bar_line(int width, int height, int margin_left, int margin_top, object color_bg, string titel, object color_text,bool visable)
         {
             if (visable)
             {
@@ -121,7 +130,7 @@ namespace test
                 {
                     try
                     {
-                        Console.SetCursorPosition(margin_left, HEIGHT - HEIGHTight);
+                        Console.SetCursorPosition(margin_left, HEIGHT - height);
                     }
                     catch
                     {
@@ -136,13 +145,13 @@ namespace test
 
                 int titel_size = titel.Length;
 
-                for (int i = 0; i < HEIGHTight; i++)
+                for (int i = 0; i < height; i++)
                 {
                     for (int j = 0; j < width; j++)
                     {
                         Console.BackgroundColor = (ConsoleColor)color_bg;
                         Console.ForegroundColor = (ConsoleColor)color_text;
-                        if (i == HEIGHTight / 2 && j == width / 2 - titel_size / 2)
+                        if (i == height / 2 && j == width / 2 - titel_size / 2)
                         {
                             Console.Write(titel);
                             Console.Write(" ");
@@ -246,14 +255,14 @@ namespace test
         }
 
         // add rectangel window 
-        public void null_window(bool Percentage_value_size, int width, int HEIGHTight, bool Percentage_value_margin, int margin_left, int margin_Top, object color_bg,bool visable)
+        public void null_window(bool Percentage_value_size, int width, int height, bool Percentage_value_margin, int margin_left, int margin_Top, object color_bg,bool visable)
         {
             if (visable)
             {
                 if (Percentage_value_size)
                 {
                     width = width * WIDTH / 100;
-                    HEIGHTight = HEIGHTight * HEIGHT / 100;
+                    height = height * HEIGHT / 100;
                 }
                 if (Percentage_value_margin)
                 {
@@ -265,23 +274,23 @@ namespace test
                 {
                     if (margin_left == 0 && margin_Top == 0)
                     {
-                        Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - HEIGHTight / 2);
+                        Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - height / 2);
 
                     }
                     else if (margin_left == 0)
                     {
-                        Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - HEIGHTight / 2);
+                        Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - height / 2);
 
                     }
                     else if (margin_Top == 0)
                     {
-                        Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - HEIGHTight / 2);
+                        Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - height / 2);
                     }
                     else
                     {
                         Console.SetCursorPosition(margin_left , margin_Top );
                     }
-                    for (int i = 0; i < HEIGHTight; i++)
+                    for (int i = 0; i < height; i++)
                     {
                         for (int j = 0; j < width; j++)
                         {
@@ -291,17 +300,17 @@ namespace test
                         }
                         if (margin_left == 0 && margin_Top == 0)
                         {
-                            Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - HEIGHTight / 2 + i);
+                            Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - height / 2 + i);
 
                         }
                         else if (margin_left == 0)
                         {
-                            Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - HEIGHTight / 2 + i);
+                            Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - height / 2 + i);
 
                         }
                         else if (margin_Top == 0)
                         {
-                            Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - HEIGHTight / 2 + i);
+                            Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - height / 2 + i);
                         }
                         else
                         {
@@ -357,13 +366,15 @@ namespace test
                 Console.Write(input_text);
                 value_get = Console.ReadLine();
                 Console.CursorVisible = false;
+                consoel.SetCursorPosition(WIDTH,HEIGHT);
                 return value_get;
 
             }
-            return "";
+            return;
            
         }
 
 
     }
 }
+
