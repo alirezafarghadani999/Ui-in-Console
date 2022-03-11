@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace test
+namespace NIDE
 {
     public class View_Print
     {
@@ -16,22 +16,25 @@ namespace test
         private int select_list_options = 0;
 
 
-        public int Select_list_options   
+        public int Select_list_options
         {
-            get { return select_list_options; }   
-            set { select_list_options = value; 
-                select_options =select_list_options ;
+            get { return select_list_options; }
+            set
+            {
+                select_list_options = value;
+                select_options = select_list_options;
                 refresh();
-            }  
+            }
         }
-        public int Select_list_options_row   
+        public int Select_list_options_row
         {
-            get { return select_list_options_row; }   
-            set { 
+            get { return select_list_options_row; }
+            set
+            {
                 select_list_options_row = value;
-                column_options =select_list_options_row ;
+                column_options = select_list_options_row;
                 refresh();
-                 }  
+            }
         }
 
 
@@ -121,7 +124,7 @@ namespace test
         }
 
         //add bar line
-        public void bar_line(int width, int height, int margin_left, int margin_top, object color_bg, string titel, object color_text,bool visable)
+        public void bar_line(int width, int height, int margin_left, int margin_top, object color_bg, string titel, object color_text, bool visable)
         {
             if (visable)
             {
@@ -208,7 +211,7 @@ namespace test
                             column_options += 1;
                             select_options = 0;
 
-                        } 
+                        }
                         else if (select_options < 0)
                         {
                             column_options -= 1;
@@ -255,7 +258,7 @@ namespace test
         }
 
         // add rectangel window 
-        public void null_window(bool Percentage_value_size, int width, int height, bool Percentage_value_margin, int margin_left, int margin_Top, object color_bg,bool visable)
+        public void null_window(bool Percentage_value_size, int width, int height, bool Percentage_value_margin, int margin_left, int margin_Top, object color_bg, bool visable)
         {
             if (visable)
             {
@@ -288,7 +291,7 @@ namespace test
                     }
                     else
                     {
-                        Console.SetCursorPosition(margin_left , margin_Top );
+                        Console.SetCursorPosition(margin_left, margin_Top);
                     }
                     for (int i = 0; i < height; i++)
                     {
@@ -314,7 +317,7 @@ namespace test
                         }
                         else
                         {
-                            Console.SetCursorPosition(margin_left , margin_Top + i);
+                            Console.SetCursorPosition(margin_left, margin_Top + i);
                         }
 
 
@@ -331,7 +334,7 @@ namespace test
 
 
         // text 
-        public void text(bool Percentage_value,int left,int top,string txt,object bg_color,object text_color,bool visable)
+        public void text(bool Percentage_value, int left, int top, string txt, object bg_color, object text_color, bool visable)
         {
             if (visable)
             {
@@ -366,15 +369,14 @@ namespace test
                 Console.Write(input_text);
                 value_get = Console.ReadLine();
                 Console.CursorVisible = false;
-                consoel.SetCursorPosition(WIDTH,HEIGHT);
+                Console.SetCursorPosition(WIDTH-1, HEIGHT-1);
                 return value_get;
 
             }
-            return;
-           
+            return "";
+
         }
 
 
     }
 }
-
