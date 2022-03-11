@@ -7,24 +7,34 @@ namespace NIDE
 {
     public class View_Print
     {
-        public int He, Wd;
+        public int HEIGHT, WIDTH;
         public int select_options = 0;
-        public int options_get = 0;
+        public int column_options = 0;
         static int[] options_list_number = new int[500];
         public int all_options = 0;
         private int select_list_options_row = 0;
         private int select_list_options = 0;
 
 
-        public int Select_list_options   // property
+        public int Select_list_options
         {
-            get { return select_list_options; }   // get method
-            set { select_list_options = value; }  // set method
+            get { return select_list_options; }
+            set
+            {
+                select_list_options = value;
+                select_options = select_list_options;
+                refresh();
+            }
         }
-        public int Select_list_options_row   // property
+        public int Select_list_options_row
         {
-            get { return select_list_options_row; }   // get method
-            set { select_list_options_row = value; }  // set method
+            get { return select_list_options_row; }
+            set
+            {
+                select_list_options_row = value;
+                column_options = select_list_options_row;
+                refresh();
+            }
         }
 
 
@@ -32,13 +42,13 @@ namespace NIDE
         public void error_screen(string error)
         {
             Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < He; i++)
+            for (int i = 0; i < HEIGHT; i++)
             {
-                for (int j = 0; j < Wd; j++)
+                for (int j = 0; j < WIDTH; j++)
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write(" ");
-                    if (i == He / 2 && j == 0)
+                    if (i == HEIGHT / 2 && j == 0)
                     {
                         Console.Write(error);
                         j = j + error.Length;
@@ -51,10 +61,13 @@ namespace NIDE
         //refresh view
         public void refresh()
         {
+
             set_window(ConsoleColor.White);
             Console.Clear();
             get_windowSize();
             all_options = 0;
+            select_list_options = select_options;
+            select_list_options_row = column_options;
 
         }
 
@@ -74,13 +87,13 @@ namespace NIDE
         }
         public void move_left()
         {
-            options_get -= 1;
+            column_options -= 1;
             select_options = 0;
             refresh();
         }
         public void move_right()
         {
-            options_get += 1;
+            column_options += 1;
             select_options = 0;
             refresh();
         }
@@ -91,9 +104,9 @@ namespace NIDE
             Console.SetCursorPosition(0, 0);
             Console.BackgroundColor = (ConsoleColor)color_backGround;
             Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < He; i++)
+            for (int i = 0; i < HEIGHT; i++)
             {
-                for (int j = 0; j < Wd; j++)
+                for (int j = 0; j < WIDTH; j++)
                 {
                     Console.Write(" ");
                 }
@@ -106,12 +119,12 @@ namespace NIDE
 
         public void get_windowSize()
         {
-            He = Console.WindowHeight;
-            Wd = Console.WindowWidth;
+            HEIGHT = Console.WindowHeight;
+            WIDTH = Console.WindowWidth;
         }
 
         //add bar line
-        public void bar_line(int width, int height, int margin_left, int margin_top, object color_bg, string titel, object color_text,bool visable)
+        public void bar_line(int width, int height, int margin_left, int margin_top, object color_bg, string titel, object color_text, bool visable)
         {
             if (visable)
             {
@@ -120,7 +133,7 @@ namespace NIDE
                 {
                     try
                     {
-                        Console.SetCursorPosition(margin_left, He - height);
+                        Console.SetCursorPosition(margin_left, HEIGHT - height);
                     }
                     catch
                     {
@@ -159,25 +172,25 @@ namespace NIDE
         }
 
         // add menu options 
-        public void Options(string[] options, int width_optins, int margin_left_inside, object bg_color, object text_color, bool person_maring, int maring_left, int maring_top
+        public void Options(string[] options, int width_optins, int margin_left_inside, object bg_color, object text_color, bool Percentage_maring, int maring_left, int maring_top
             , object select_color, int option_menu_number, bool visable)
         {
             try
             {
                 if (visable)
                 {
-                    if (options_get < 0 || select_options < 0)
+                    if (column_options < 0 || select_options < 0)
                     {
-                        options_get = 0;
+                        column_options = 0;
                         select_options = 0;
                     }
 
                     options_list_number[option_menu_number] = options.Length;
                     all_options += 1;
-                    if (person_maring)
+                    if (Percentage_maring)
                     {
-                        maring_left = maring_left * Wd / 100;
-                        maring_top = maring_top * He / 100;
+                        maring_left = maring_left * WIDTH / 100;
+                        maring_top = maring_top * HEIGHT / 100;
                     }
                     Console.BackgroundColor = (ConsoleColor)bg_color;
                     Console.ForegroundColor = (ConsoleColor)text_color;
@@ -186,28 +199,28 @@ namespace NIDE
                     for (int i = 0; i < options.Length; i++)
                     {
 
-                        if (i == select_options && options_get == option_menu_number)
+                        if (i == select_options && column_options == option_menu_number)
                         {
                             Console.BackgroundColor = (ConsoleColor)select_color;
                             select_list_options = i;
-                            select_list_options_row = options_get;
+                            select_list_options_row = column_options;
 
                         }
-                        else if (select_options > options_list_number[options_get] - 1)
+                        else if (select_options > options_list_number[column_options] - 1)
                         {
-                            options_get += 1;
+                            column_options += 1;
                             select_options = 0;
 
-                        } 
+                        }
                         else if (select_options < 0)
                         {
-                            options_get -= 1;
+                            column_options -= 1;
                             select_options = options.Length - 1;
 
                         }
-                        else if (options_get < 0)
+                        else if (column_options < 0)
                         {
-                            options_get = 0;
+                            column_options = 0;
                         }
                         else
                         {
@@ -225,7 +238,7 @@ namespace NIDE
 
                                 Console.Write(options[i]);
                                 j += options[i].Length;
-                                if (width_optins + options[i].Length > Wd)
+                                if (width_optins + options[i].Length > WIDTH)
                                 {
                                     error_screen("Screen Too Small for this view");
                                 }
@@ -245,40 +258,40 @@ namespace NIDE
         }
 
         // add rectangel window 
-        public void null_window(bool person_value_size, int width, int height, bool person_value_margin, int margin_left, int margin_Top, object color_bg,bool visable)
+        public void null_window(bool Percentage_value_size, int width, int height, bool Percentage_value_margin, int margin_left, int margin_Top, object color_bg, bool visable)
         {
             if (visable)
             {
-                if (person_value_size)
+                if (Percentage_value_size)
                 {
-                    width = width * Wd / 100;
-                    height = height * He / 100;
+                    width = width * WIDTH / 100;
+                    height = height * HEIGHT / 100;
                 }
-                if (person_value_margin)
+                if (Percentage_value_margin)
                 {
-                    margin_left = margin_left * Wd / 100;
-                    margin_Top = margin_Top * He / 100;
+                    margin_left = margin_left * WIDTH / 100;
+                    margin_Top = margin_Top * HEIGHT / 100;
                 }
 
                 try
                 {
                     if (margin_left == 0 && margin_Top == 0)
                     {
-                        Console.SetCursorPosition(Wd / 2 - width / 2, He / 2 - height / 2);
+                        Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - height / 2);
 
                     }
                     else if (margin_left == 0)
                     {
-                        Console.SetCursorPosition(Wd / 2 - width / 2, margin_Top - height / 2);
+                        Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - height / 2);
 
                     }
                     else if (margin_Top == 0)
                     {
-                        Console.SetCursorPosition(margin_left - width / 2, He / 2 - height / 2);
+                        Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - height / 2);
                     }
                     else
                     {
-                        Console.SetCursorPosition(margin_left , margin_Top );
+                        Console.SetCursorPosition(margin_left, margin_Top);
                     }
                     for (int i = 0; i < height; i++)
                     {
@@ -290,21 +303,21 @@ namespace NIDE
                         }
                         if (margin_left == 0 && margin_Top == 0)
                         {
-                            Console.SetCursorPosition(Wd / 2 - width / 2, He / 2 - height / 2 + i);
+                            Console.SetCursorPosition(WIDTH / 2 - width / 2, HEIGHT / 2 - height / 2 + i);
 
                         }
                         else if (margin_left == 0)
                         {
-                            Console.SetCursorPosition(Wd / 2 - width / 2, margin_Top - height / 2 + i);
+                            Console.SetCursorPosition(WIDTH / 2 - width / 2, margin_Top - height / 2 + i);
 
                         }
                         else if (margin_Top == 0)
                         {
-                            Console.SetCursorPosition(margin_left - width / 2, He / 2 - height / 2 + i);
+                            Console.SetCursorPosition(margin_left - width / 2, HEIGHT / 2 - height / 2 + i);
                         }
                         else
                         {
-                            Console.SetCursorPosition(margin_left , margin_Top + i);
+                            Console.SetCursorPosition(margin_left, margin_Top + i);
                         }
 
 
@@ -321,14 +334,14 @@ namespace NIDE
 
 
         // text 
-        public void text(bool person_value,int left,int top,string txt,object bg_color,object text_color,bool visable)
+        public void text(bool Percentage_value, int left, int top, string txt, object bg_color, object text_color, bool visable)
         {
             if (visable)
             {
-                if (person_value)
+                if (Percentage_value)
                 {
-                    left = left * Wd / 100;
-                    top = top * He / 100;
+                    left = left * WIDTH / 100;
+                    top = top * HEIGHT / 100;
                 }
                 Console.BackgroundColor = (ConsoleColor)bg_color;
                 Console.ForegroundColor = (ConsoleColor)text_color;
@@ -338,15 +351,15 @@ namespace NIDE
             }
         }
 
-        public string input(bool person_value, int left, int top, string input_text, object bg_color, object text_color, bool visable)
+        public string input(bool Percentage_value, int left, int top, string input_text, object bg_color, object text_color, bool visable)
         {
             string value_get;
             if (visable)
             {
-                if (person_value)
+                if (Percentage_value)
                 {
-                    left = left * Wd / 100;
-                    top = top * He / 100;
+                    left = left * WIDTH / 100;
+                    top = top * HEIGHT / 100;
                 }
                 Console.BackgroundColor = (ConsoleColor)bg_color;
                 Console.ForegroundColor = (ConsoleColor)text_color;
@@ -355,14 +368,14 @@ namespace NIDE
                 Console.SetCursorPosition(left, top);
                 Console.Write(input_text);
                 value_get = Console.ReadLine();
-                return value_get;
                 Console.CursorVisible = false;
+                Console.SetCursorPosition(WIDTH-1, HEIGHT-1);
+                return value_get;
 
             }
             return "";
-           
-        }
 
+        }
 
 
     }
